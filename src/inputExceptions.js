@@ -6,7 +6,7 @@ function checkInput(carsName, bool) {
   return carsName;
 }
 
-function carsNameExceptionInput(carsNameinput) {
+function exceptionCarsNameInput(carsNameinput) {
   const carsNameArray = carsNameinput.split(',');
   let boolInput = false;
   if ((carsNameinput.length > 5 && !carsNameinput.includes(','))
@@ -24,4 +24,4 @@ function carsNameExceptionInput(carsNameinput) {
   return checkInput(carsNameArray, boolInput);
 }
 
-export { carsNameExceptionInput };
+export { exceptionCarsNameInput };
