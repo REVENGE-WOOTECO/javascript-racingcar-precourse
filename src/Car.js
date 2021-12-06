@@ -5,7 +5,7 @@ class Car {
   }
 
   move() {
-    this.datance += 1;
+    this.distance += 1;
   }
 }
 
