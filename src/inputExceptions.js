@@ -1,27 +1,37 @@
-function checkInput(carsName, bool) {
+function checkInput(input, bool) {
   if (bool) {
     return alert('다시 입력해주세요!');
   }
 
-  return carsName;
+  return input;
 }
 
-function exceptionCarsNameInput(carsNameinput) {
-  const carsNameArray = carsNameinput.split(',');
+function exceptionCarsNameInput(carsNameInput) {
+  const carsNameArray = carsNameInput.split(',');
+  const MAX_LENGTH = 5;
   let boolInput = false;
-  if ((carsNameinput.length > 5 && !carsNameinput.includes(','))
+
+  if ((carsNameInput.length > MAX_LENGTH && !carsNameInput.includes(','))
       || carsNameArray.includes('')) {
     boolInput = true;
   }
-  if (carsNameinput.length > 5 && carsNameinput.includes(',')) {
-    for (let i = 0; i < carsNameArray.length; i += 1) {
-      if (carsNameArray[i].length > 5 || carsNameArray[i] === '') {
-        boolInput = true;
-        break;
-      }
+
+  carsNameArray.forEach((e) => {
+    if (e.length > MAX_LENGTH || e === '') {
+      boolInput = true;
     }
-  }
+  });
+
   return checkInput(carsNameArray, boolInput);
 }
 
-export { exceptionCarsNameInput };
+function exceptionRacingCountInput(racingCountInput) {
+  let boolInput = false;
+  if (racingCountInput === '' || Number(racingCountInput) < 1) {
+    boolInput = true;
+  }
+
+  return checkInput(racingCountInput, boolInput);
+}
+
+export { exceptionCarsNameInput, exceptionRacingCountInput };
