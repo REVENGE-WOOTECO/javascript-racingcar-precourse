@@ -12,15 +12,16 @@ class Car {
     this.racingCountSubmitBtn = document.getElementById("racing-count-submit");
     this.carNamesInputEl = document.getElementById("car-names-input");
     this.racingCountInputEl = document.getElementById("racing-count-input");
-    this.handleInput();
+
+    this.handleCarNamesSubmit();
+    this.handleRacingCountSubmit();
   }
 
   // 자동차를 입력받아 생성하는 기능
-  createCar() {
-    const namesArr = this.carNamesInputEl.value.split(",");
-    const namesNum = namesArr.length;
+  createCar(carNames) {
+    const namesNum = carNames.length;
 
-    this.names = namesArr;
+    this.names = carNames;
     this.locations = Array(namesNum).fill(0);
   }
 
@@ -35,15 +36,25 @@ class Car {
     this.locations[carIdx] += 1;
   }
 
-  handleInput() {
+  handleCarNamesSubmit() {
     this.carNamesSubmitBtn.addEventListener("click", () => {
-      this.createCar();
-      console.log(this);
+      const carNames = this.carNamesInputEl.value.split(",");
+      if (this.isValidCarNames(carNames)) {
+        this.createCar(carNames);
+      } else {
+        this.showErrorMessage();
+      }
     });
+  }
 
+  handleRacingCountSubmit() {
     this.racingCountSubmitBtn.addEventListener("click", () => {
-      this.setRacingCount();
-      console.log(this);
+      const racingCount = this.racingCountInputEl.value;
+      if (this.isValidRacingCount(racingCount)) {
+        this.setRacingCount(racingCount);
+      } else {
+        this.showErrorMessage();
+      }
     });
   }
 
@@ -54,14 +65,39 @@ class Car {
   }
 
   // 몇 번의 이동을 할 것인지 입력 받는 기능
-  setRacingCount() {
-    this.racingCount = this.racingCountInputEl.value;
+  setRacingCount(racingCount) {
+    this.racingCount = Number(racingCount);
+  }
+
+  // 랜덤 숫자를 받는 기능
+  getRandomNumber() {
+    const MIN = 0;
+    const MAX = 9;
+    const LEN = 1;
+    return MissionUtils.Random.pickNumberInRange(MIN, MAX, LEN);
+  }
+
+  // 입력받은 자동차 이름이 유효한지 판별하는 기능
+  isValidCarNames(names) {
+    const hasBlank = names.some((name) => name === '');
+    const isValidLength = names.every((name) => name.length <= 5);
+    return !hasBlank && isValidLength;
+  }
+
+  // 입력받은 횟수가 유효한지 판별하는 기능
+  isValidRacingCount(number) {
+    const NUM = 0;
+    return number >= NUM;
+  }
+
+  // 잘못된 값이면 alert를 띄우는 기능
+  showErrorMessage() {
+    alert('잘못된 입력값입니다.');
   }
 }
 
 const car = new Car();
 
 // 우승자를 고르는 기능
-// 잘못된 입력 값인 경우 alert를 보여주는 기능
 // 자동차의 위치를 출력하는 기능
 // 우승자를 출력하는 기능
