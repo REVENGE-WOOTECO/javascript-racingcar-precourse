@@ -1,37 +1,41 @@
-function checkInput(input, bool) {
+const checkInput = (bool) => {
   if (bool) {
-    return alert('다시 입력해주세요!');
+    return true;
   }
 
-  return input;
-}
+  return false;
+};
 
-function exceptionCarsNameInput(carsNameInput) {
-  const carsNameArray = carsNameInput.split(',');
-  const MAX_LENGTH = 5;
-  let boolInput = false;
+const exceptionCarsNameInput = (carsNameInput) => {
+  const carsNames = carsNameInput.split(',');
+  const INPUT_LENGTH = {
+    MAX: 5,
+    MIN: 1,
+  };
+  let boolInput = true;
 
-  if ((carsNameInput.length > MAX_LENGTH && !carsNameInput.includes(','))
-      || carsNameArray.includes('')) {
-    boolInput = true;
+  if ((carsNameInput.length > INPUT_LENGTH.MAX && !carsNameInput.includes(','))
+      || carsNames.includes('')
+      || carsNames.length === INPUT_LENGTH.MIN) {
+    boolInput = false;
   }
 
-  carsNameArray.forEach((e) => {
-    if (e.length > MAX_LENGTH || e === '') {
-      boolInput = true;
+  carsNames.forEach((e) => {
+    if (e.length > INPUT_LENGTH.MAX || e === '') {
+      boolInput = false;
     }
   });
 
-  return checkInput(carsNameArray, boolInput);
-}
+  return checkInput(boolInput);
+};
 
-function exceptionRacingCountInput(racingCountInput) {
-  let boolInput = false;
-  if (racingCountInput === '' || Number(racingCountInput) < 1) {
-    boolInput = true;
-  }
+const exceptionRacingCountInput = (racingCountInput) => {
+  const validaitions = [
+    racingCountInput !== '',
+    Number(racingCountInput) > 0,
+  ];
 
-  return checkInput(racingCountInput, boolInput);
-}
+  return checkInput(validaitions.every((validaition) => validaition));
+};
 
 export { exceptionCarsNameInput, exceptionRacingCountInput };

@@ -1,4 +1,4 @@
-function formEvent() {
+const formEvent = () => {
   const allForm = document.getElementsByTagName('form');
 
   for (const $form of allForm) {
@@ -6,6 +6,6 @@ function formEvent() {
       e.preventDefault();
     });
   }
-}
+};
 
 export { formEvent };

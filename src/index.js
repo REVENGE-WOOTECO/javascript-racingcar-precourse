@@ -15,121 +15,24 @@
 
 [ㅇ] - 자동차 이름을 입력하면 시도할 횟수가 나타나야한다.
 [ㅇ] - 시도할 횟수를 입력하면 실행 결과 글자가 나와야 한다.
-[] - 시도할 횟수를 입력하고 버튼을 누르면 그 만큼 결과 하나씩 출력한다
-[] - 입력한 횟수를 다 시도했을 때 최종 우승자 출력한다.(여러명이면 쉼표로 구분)
-[] - 최종 우승자 출력 시 span태그는 racing-winners의 id값이다.
+[ㅇ] - 시도할 횟수를 입력하고 버튼을 누르면 그 만큼 결과 하나씩 출력한다
+[ㅇ] - 입력한 횟수를 다 시도했을 때 최종 우승자 출력한다.(여러명이면 쉼표로 구분)
+[ㅇ] - 최종 우승자 출력 시 span태그는 racing-winners의 id값이다.
 
 */
-import { exceptionCarsNameInput, exceptionRacingCountInput } from './inputExceptions.js';
-import { getRandomNumber } from './missionUtils.js';
-import { Car } from './Car.js';
+import { verifyMoveCars } from './missionUtils.js';
+import { getCarsNameInput, getRacingCountInput } from './getInputValues.js';
 import { formEvent } from './formEvent.js';
+import {
+  hiddenHTML, printCarStatus, printWinner, printWinnerTitle, determineWinner,
+} from './view.js';
 
-function hiddenHTML() {
-  document.querySelector('#text1').style.visibility = 'hidden';
-  document.querySelector('#text2').style.visibility = 'hidden';
-  document.querySelector('#racing-count-form').style.visibility = 'hidden';
-}
+hiddenHTML(); // html 요소 숨기기
+formEvent(); // form 새로고침 막기
 
-function getCarsNameInput() {
-  const carsNameInput = document.querySelector('#cars-name-input').value;
-  const $carsNameInput = exceptionCarsNameInput(carsNameInput).map((e) => new Car(e, 0));
-
-  return $carsNameInput;
-}
-
-function getRacingCountInput() {
-  const racingCountInput = document.querySelector('#racing-count-input').value;
-  const $racingCountInput = exceptionRacingCountInput(racingCountInput);
-
-  return $racingCountInput;
-}
-
-function verifyMoveCars(cars) {
-  const MIN_NUMBER_OF_MOVE = 4;
-  const $cars = Object.values(cars);
-  $cars.forEach((e) => {
-    const RANDOM_NUMBER = getRandomNumber();
-    if (RANDOM_NUMBER >= MIN_NUMBER_OF_MOVE) {
-      e.move();
-    }
-  });
-
-  return $cars;
-}
-
-function forwardCar(count) {
-  let carMove = '';
-  for (let i = 0; i < count; i += 1) {
-    carMove += '-';
-  }
-
-  return carMove;
-}
-
-function printCarStatus(cars) {
-  const gameRound = document.createElement('div');
-  gameRound.style.marginBottom = '50px';
-
-  const $cars = Object.values(cars);
-
-  $cars.forEach((e) => {
-    const car = document.createElement('p');
-    const resultCarMove = document.createTextNode(
-      `${e.name}: ${forwardCar(e.distance)}`,
-    );
-    car.append(resultCarMove);
-    gameRound.appendChild(car);
-  });
-  document.querySelector('#app').appendChild(gameRound);
-}
-
-function determineWinner(cars) {
-  const $cars = Object.values(cars);
-  $cars.sort((a, b) => b.distance - a.distance);
-
-  const MAX_DISTANCE = $cars[0].distance;
-
-  const winners = $cars.reduce((acc, cur) => {
-    if (cur.distance === MAX_DISTANCE) {
-      acc.push(cur.name);
-    }
-    return acc;
-  }, []);
-
-  return winners;
-}
-
-function printWinnerTitle() {
-  const winnerTitle = '최종 우승자: ';
-  const winnerTitleTag = document.createElement('span');
-  const winnerTitleNode = document.createTextNode(winnerTitle);
-
-  winnerTitleTag.appendChild(winnerTitleNode);
-  document.querySelector('#app').appendChild(winnerTitleTag);
-}
-
-function printWinner(winners) {
-  const gameResult = document.createElement('span');
-  gameResult.id = 'racing-winners';
-
-  let $winner = '';
-  winners.forEach((e, idx) => {
-    if (idx === 0) {
-      $winner += e;
-    } else {
-      $winner += `, ${e}`;
-    }
-  });
-
-  const winnerTextNode = document.createTextNode($winner);
-  gameResult.appendChild(winnerTextNode);
-  document.querySelector('#app').appendChild(gameResult);
-}
-
-function racingGame() {
+const racingGame = () => {
   const carsValue = {};
-  document.querySelector('#cars-name-submit').addEventListener('click', () => {
+  document.querySelector('#car-names-submit').addEventListener('click', () => {
     carsValue.carsName = getCarsNameInput();
     if (carsValue.carsName !== undefined) {
       document.querySelector('#text1').style.visibility = 'visible';
@@ -141,7 +44,6 @@ function racingGame() {
     carsValue.racingCount = getRacingCountInput();
     if (carsValue.racingCount !== undefined) {
       document.querySelector('#text2').style.visibility = 'visible';
-
       for (let i = 0; i < Number(carsValue.racingCount); i += 1) {
         verifyMoveCars(carsValue.carsName);
         printCarStatus(carsValue.carsName);
@@ -152,8 +54,6 @@ function racingGame() {
       printWinner(winner);
     }
   });
-}
+};
 
 racingGame();
-hiddenHTML();
-formEvent();
