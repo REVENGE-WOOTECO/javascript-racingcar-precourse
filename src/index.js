@@ -20,13 +20,52 @@
 [] - 최종 우승자 출력 시 span태그는 racing-winners의 id값이다.
 
 */
-import { exceptionCarsNameInput } from './inputExceptions.js';
+import { exceptionCarsNameInput, exceptionRacingCountInput } from './inputExceptions.js';
 import { getRandomNumber } from './missionUtils.js';
+import { Car } from './Car.js';
+import { formEvent } from './formEvent.js';
 
-document.querySelector('form').addEventListener('submit', (e) => {
-  e.preventDefault();
-});
+function hiddenHTML() {
+  document.querySelector('#text1').style.visibility = 'hidden';
+  document.querySelector('#text2').style.visibility = 'hidden';
+  document.querySelector('#racing-count-form').style.visibility = 'hidden';
+}
 
-document.querySelector('#text1').style.visibility = 'hidden';
-document.querySelector('#text2').style.visibility = 'hidden';
-document.querySelector('#racing-count-form').style.visibility = 'hidden';
+function getCarsNameInput() {
+  const carsNameInput = document.querySelector('#cars-name-input').value;
+  const $carsNameInput = exceptionCarsNameInput(carsNameInput).map((e) => new Car(e, 0));
+
+  return $carsNameInput;
+}
+
+function getRacingCountInput() {
+  const racingCountInput = document.querySelector('#racing-count-input').value;
+  const $racingCountInput = exceptionRacingCountInput(racingCountInput);
+
+  return $racingCountInput;
+}
+
+function App() {
+  const carsValue = {};
+  document.querySelector('#cars-name-submit').addEventListener('click', () => {
+    carsValue.carsName = getCarsNameInput();
+
+    if (carsValue.carsName !== undefined) {
+      document.querySelector('#text1').style.visibility = 'visible';
+      document.querySelector('#racing-count-form').style.visibility = 'visible';
+    }
+  });
+
+  document.querySelector('#racing-count-submit').addEventListener('click', () => {
+    carsValue.racingCount = getRacingCountInput();
+
+    if (carsValue.racingCount !== undefined) {
+      document.querySelector('#text2').style.visibility = 'visible';
+      console.log(carsValue);
+    }
+  });
+}
+
+App();
+hiddenHTML();
+formEvent();
