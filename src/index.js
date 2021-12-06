@@ -12,6 +12,11 @@ class Car {
     this.racingCountSubmitBtn = document.getElementById("racing-count-submit");
     this.carNamesInputEl = document.getElementById("car-names-input");
     this.racingCountInputEl = document.getElementById("racing-count-input");
+    
+    const appEl = document.getElementById('app');
+    const resultEl = document.createElement('div');
+    resultEl.setAttribute('id', 'race-result');
+    appEl.appendChild(resultEl);
 
     this.handleCarNamesSubmit();
     this.handleRacingCountSubmit();
@@ -22,7 +27,7 @@ class Car {
     const namesNum = carNames.length;
 
     this.names = carNames;
-    this.locations = Array(namesNum).fill(0);
+    this.locations = Array(namesNum).fill('');
   }
 
   // 차 이름으로 인덱스를 찾는 기능
@@ -33,7 +38,7 @@ class Car {
   // 자동차가 전진하는 기능
   advanceCar(carName) {
     const carIdx = this.getCarIdx(carName);
-    this.locations[carIdx] += 1;
+    this.locations[carIdx] += '-';
   }
 
   handleCarNamesSubmit() {
@@ -52,6 +57,7 @@ class Car {
       const racingCount = this.racingCountInputEl.value;
       if (this.isValidRacingCount(racingCount)) {
         this.setRacingCount(racingCount);
+        this.playRace(racingCount);
       } else {
         this.showErrorMessage();
       }
@@ -94,10 +100,44 @@ class Car {
   showErrorMessage() {
     alert('잘못된 입력값입니다.');
   }
+  
+  playRace(n) {
+    for (let i = 0; i < n; i++) {
+      this.moveCar();
+      this.showRaceResult();
+    }
+  }
+
+  // 자동차의 위치를 출력하는 기능
+  showRaceResult() {
+    const raceResultEl = document.getElementById('race-result');
+
+    this.names.forEach((name, i) => {
+      const el = document.createElement('div');
+      el.innerText = `${name} : ${this.locations[i]}`;
+      raceResultEl.appendChild(el);
+      document.getElementById('race-result').appendChild(el);  
+    });
+    
+    const blankEl = document.createElement('span');
+    blankEl.innerHTML = `&nbsp`;
+    raceResultEl.appendChild(blankEl);
+  }
+  
+  // 자동차의 위치를 갱신하는 기능
+  moveCar() {
+    this.locations = this.locations.map(loca => {
+      if (this.canAdvance(this.getRandomNumber())) {
+        return loca + '-';
+      }
+      return loca;
+    });
+  }
 }
 
 const car = new Car();
 
+
+
 // 우승자를 고르는 기능
-// 자동차의 위치를 출력하는 기능
 // 우승자를 출력하는 기능
