@@ -7,14 +7,14 @@
 
 [] 2. 동작
 
-[] - car객체를 만들고 new를 이용해 인스턴스를 생성한다.
-[] - 자동차는 랜덤값에 따라 전진 혹은 정지한다.
-[] - MissonUntils 라이브러리를 사용하여 0~9의 랜덤숫자를 만들고, 랜덤 값이 4이상인 경우 자동차는 전진한다.
+[ㅇ] - car객체를 만들고 new를 이용해 인스턴스를 생성한다.
+[ㅇ] - 자동차는 랜덤값에 따라 전진 혹은 정지한다.
+[ㅇ] - MissonUntils 라이브러리를 사용하여 0~9의 랜덤숫자를 만들고, 랜덤 값이 4이상인 경우 자동차는 전진한다.
 
 [] 3. 출력
 
-[] - 자동차 이름을 입력하면 시도할 횟수가 나타나야한다.
-[] - 시도할 횟수를 입력하면 실행 결과 글자가 나와야 한다.
+[ㅇ] - 자동차 이름을 입력하면 시도할 횟수가 나타나야한다.
+[ㅇ] - 시도할 횟수를 입력하면 실행 결과 글자가 나와야 한다.
 [] - 시도할 횟수를 입력하고 버튼을 누르면 그 만큼 결과 하나씩 출력한다
 [] - 입력한 횟수를 다 시도했을 때 최종 우승자 출력한다.(여러명이면 쉼표로 구분)
 [] - 최종 우승자 출력 시 span태그는 racing-winners의 id값이다.
@@ -45,11 +45,49 @@ function getRacingCountInput() {
   return $racingCountInput;
 }
 
-function App() {
+function verifyMoveCars(cars) {
+  const MIN_NUMBER_OF_MOVE = 4;
+  const $cars = Object.values(cars);
+  $cars.forEach((e) => {
+    const RANDOM_NUMBER = getRandomNumber();
+    if (RANDOM_NUMBER >= MIN_NUMBER_OF_MOVE) {
+      e.move();
+    }
+  });
+
+  return $cars;
+}
+
+function forwardCar(count) {
+  let carMove = '';
+  for (let i = 0; i < count; i += 1) {
+    carMove += '-';
+  }
+
+  return carMove;
+}
+
+function showWindowCarStatus(cars) {
+  const gameRound = document.createElement('div');
+  gameRound.style.marginBottom = '50px';
+
+  const $cars = Object.values(cars);
+
+  $cars.forEach((e) => {
+    const car = document.createElement('p');
+    const resultCarMove = document.createTextNode(
+      `${e.name}: ${forwardCar(e.distance)}`,
+    );
+    car.append(resultCarMove);
+    gameRound.appendChild(car);
+  });
+  document.querySelector('#app').appendChild(gameRound);
+}
+
+function racingGame() {
   const carsValue = {};
   document.querySelector('#cars-name-submit').addEventListener('click', () => {
     carsValue.carsName = getCarsNameInput();
-
     if (carsValue.carsName !== undefined) {
       document.querySelector('#text1').style.visibility = 'visible';
       document.querySelector('#racing-count-form').style.visibility = 'visible';
@@ -58,14 +96,17 @@ function App() {
 
   document.querySelector('#racing-count-submit').addEventListener('click', () => {
     carsValue.racingCount = getRacingCountInput();
-
     if (carsValue.racingCount !== undefined) {
       document.querySelector('#text2').style.visibility = 'visible';
-      console.log(carsValue);
+
+      for (let i = 0; i < Number(carsValue.racingCount); i += 1) {
+        verifyMoveCars(carsValue.carsName);
+        showWindowCarStatus(carsValue.carsName);
+      }
     }
   });
 }
 
-App();
+racingGame();
 hiddenHTML();
 formEvent();
