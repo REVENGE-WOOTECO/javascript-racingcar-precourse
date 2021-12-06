@@ -58,6 +58,7 @@ class Car {
       if (this.isValidRacingCount(racingCount)) {
         this.setRacingCount(racingCount);
         this.playRace(racingCount);
+        this.showWinner();
       } else {
         this.showErrorMessage();
       }
@@ -118,7 +119,7 @@ class Car {
       raceResultEl.appendChild(el);
       document.getElementById('race-result').appendChild(el);  
     });
-    
+
     const blankEl = document.createElement('span');
     blankEl.innerHTML = `&nbsp`;
     raceResultEl.appendChild(blankEl);
@@ -133,11 +134,33 @@ class Car {
       return loca;
     });
   }
+
+  // 우승자를 출력하는 기능
+  showWinner() {
+    const max = Math.max(...this.locations.map(x => x.length));
+    const winners = this.names.filter((name, i) => {
+      return this.locations[i].length === max;
+    });
+
+    const winnersEl = document.createElement('span');
+    winnersEl.setAttribute('id', 'racing-winners');
+    document.getElementById('app').appendChild(winnersEl);
+
+    const resultMsgEl = document.createElement('div');
+    let winnersStr = '';
+    
+    winners.forEach((winner, i) => {
+      if (i === 0) {
+        winnersStr += `${winner}`;
+      } else {
+        winnersStr += `, ${winner}`;
+      }
+    });
+    resultMsgEl.innerText = `최종 우승자: ${winnersStr}`;
+    
+    winnersEl.appendChild(resultMsgEl);
+  }
 }
 
 const car = new Car();
 
-
-
-// 우승자를 고르는 기능
-// 우승자를 출력하는 기능
