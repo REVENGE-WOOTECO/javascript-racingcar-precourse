@@ -58,7 +58,7 @@ class Car {
       if (this.isValidRacingCount(racingCount)) {
         this.setRacingCount(racingCount);
         this.playRace(racingCount);
-        this.showWinner();
+        this.showWinners();
       } else {
         this.showErrorMessage();
       }
@@ -135,18 +135,29 @@ class Car {
     });
   }
 
-  // 우승자를 출력하는 기능
-  showWinner() {
+  // 우승자를 선택하는 기능
+  getWinners() {
     const max = Math.max(...this.locations.map(x => x.length));
-    const winners = this.names.filter((name, i) => {
+    const winners = this.names.filter((_, i) => {
       return this.locations[i].length === max;
     });
+    return winners;
+  }
 
-    const winnersEl = document.createElement('span');
-    winnersEl.setAttribute('id', 'racing-winners');
-    document.getElementById('app').appendChild(winnersEl);
+  // 엘리먼트를 생성하는 기능
+  createElement(parentID, tag, text, tagID = null) {
+    const el = document.createElement(tag);
+    if (tagID) {
+      el.setAttribute('id', tagID);
+    }
+    el.innerText = text;
+    document.getElementById(parentID).appendChild(el);
+    return el;
+  }
 
-    const resultMsgEl = document.createElement('div');
+  // 우승자를 출력하는 기능
+  showWinners() {
+    const winners = this.getWinners(); // [east, west]
     let winnersStr = '';
     
     winners.forEach((winner, i) => {
@@ -156,11 +167,11 @@ class Car {
         winnersStr += `, ${winner}`;
       }
     });
-    resultMsgEl.innerText = `최종 우승자: ${winnersStr}`;
     
-    winnersEl.appendChild(resultMsgEl);
+    this.createElement('app', 'span', '최종 우승자: ');
+    const winnersEl = this.createElement('app', 'span', null, 'racing-winners');
+    winnersEl.innerText = winnersStr;
   }
 }
 
 const car = new Car();
-
