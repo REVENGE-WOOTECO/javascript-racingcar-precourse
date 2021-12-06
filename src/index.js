@@ -67,7 +67,7 @@ function forwardCar(count) {
   return carMove;
 }
 
-function showWindowCarStatus(cars) {
+function printCarStatus(cars) {
   const gameRound = document.createElement('div');
   gameRound.style.marginBottom = '50px';
 
@@ -82,6 +82,49 @@ function showWindowCarStatus(cars) {
     gameRound.appendChild(car);
   });
   document.querySelector('#app').appendChild(gameRound);
+}
+
+function determineWinner(cars) {
+  const $cars = Object.values(cars);
+  $cars.sort((a, b) => b.distance - a.distance);
+
+  const MAX_DISTANCE = $cars[0].distance;
+
+  const winners = $cars.reduce((acc, cur) => {
+    if (cur.distance === MAX_DISTANCE) {
+      acc.push(cur.name);
+    }
+    return acc;
+  }, []);
+
+  return winners;
+}
+
+function printWinnerTitle() {
+  const winnerTitle = '최종 우승자: ';
+  const winnerTitleTag = document.createElement('span');
+  const winnerTitleNode = document.createTextNode(winnerTitle);
+
+  winnerTitleTag.appendChild(winnerTitleNode);
+  document.querySelector('#app').appendChild(winnerTitleTag);
+}
+
+function printWinner(winners) {
+  const gameResult = document.createElement('span');
+  gameResult.id = 'racing-winners';
+
+  let $winner = '';
+  winners.forEach((e, idx) => {
+    if (idx === 0) {
+      $winner += e;
+    } else {
+      $winner += `, ${e}`;
+    }
+  });
+
+  const winnerTextNode = document.createTextNode($winner);
+  gameResult.appendChild(winnerTextNode);
+  document.querySelector('#app').appendChild(gameResult);
 }
 
 function racingGame() {
@@ -101,8 +144,12 @@ function racingGame() {
 
       for (let i = 0; i < Number(carsValue.racingCount); i += 1) {
         verifyMoveCars(carsValue.carsName);
-        showWindowCarStatus(carsValue.carsName);
+        printCarStatus(carsValue.carsName);
       }
+
+      const winner = determineWinner(carsValue.carsName);
+      printWinnerTitle();
+      printWinner(winner);
     }
   });
 }
