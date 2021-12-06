@@ -13,21 +13,28 @@ class Car {
     this.carNamesInputEl = document.getElementById("car-names-input");
     this.racingCountInputEl = document.getElementById("racing-count-input");
     
-    const appEl = document.getElementById('app');
-    const resultEl = document.createElement('div');
-    resultEl.setAttribute('id', 'race-result');
-    appEl.appendChild(resultEl);
-
+    this.createElement('app', 'div', null, 'race-result');
     this.handleCarNamesSubmit();
     this.handleRacingCountSubmit();
   }
 
+  // 엘리먼트를 생성하는 기능
+  createElement(parentID, tag, text, tagID = null) {
+    const el = document.createElement(tag);
+    if (tagID) {
+      el.setAttribute('id', tagID);
+    }
+    el.innerText = text;
+    document.getElementById(parentID).appendChild(el);
+    return el;
+  }
+
   // 자동차를 입력받아 생성하는 기능
   createCar(carNames) {
-    const namesNum = carNames.length;
+    const carNumbers = carNames.length;
 
     this.names = carNames;
-    this.locations = Array(namesNum).fill('');
+    this.locations = Array(carNumbers).fill('');
   }
 
   // 차 이름으로 인덱스를 찾는 기능
@@ -35,7 +42,7 @@ class Car {
     return this.names.indexOf(carName);
   }
 
-  // 자동차가 전진하는 기능
+  // 자동차를 전진시켜주는 기능
   advanceCar(carName) {
     const carIdx = this.getCarIdx(carName);
     this.locations[carIdx] += '-';
@@ -81,7 +88,7 @@ class Car {
     const MIN = 0;
     const MAX = 9;
     const LEN = 1;
-    return MissionUtils.Random.pickNumberInRange(MIN, MAX, LEN);
+    return MissionUtils.Random.pickNumberInRange(MIN, MAX, LEN); // 1 ~ 9
   }
 
   // 입력받은 자동차 이름이 유효한지 판별하는 기능
@@ -97,7 +104,7 @@ class Car {
     return number >= NUM;
   }
 
-  // 잘못된 값이면 alert를 띄우는 기능
+  // alert를 띄우는 기능
   showErrorMessage() {
     alert('잘못된 입력값입니다.');
   }
@@ -135,24 +142,13 @@ class Car {
     });
   }
 
-  // 우승자를 선택하는 기능
+  // 우승자를 추출하는 기능
   getWinners() {
     const max = Math.max(...this.locations.map(x => x.length));
     const winners = this.names.filter((_, i) => {
       return this.locations[i].length === max;
     });
     return winners;
-  }
-
-  // 엘리먼트를 생성하는 기능
-  createElement(parentID, tag, text, tagID = null) {
-    const el = document.createElement(tag);
-    if (tagID) {
-      el.setAttribute('id', tagID);
-    }
-    el.innerText = text;
-    document.getElementById(parentID).appendChild(el);
-    return el;
   }
 
   // 우승자를 출력하는 기능
