@@ -1,6 +1,23 @@
 import Car from "./car.js";
 import { isCarNameValid, isRacingCountValid } from "./validation.js";
 
+export default function RacingCarGame() {
+  this.cars = [];
+  this.turnOfGame = 0;
+  this.race = () => {
+    for (let i = 0; i < this.cars.length; i += 1) {
+      this.cars[i] = Car.forwardCar(this.cars[i]);
+    }
+  };
+}
+
+RacingCarGame.startGame = (gameSetting) => {
+  while (gameSetting.turnOfGame > 0) {
+    gameSetting.race();
+    gameSetting.turnOfGame -= 1;
+  }
+};
+
 const preventSubmitByEnterKey = () => {
   document.addEventListener("keydown", (e) => {
     if (e.keyCode === 13) {
@@ -27,11 +44,6 @@ const showRacingCountForm = () => {
   racingCountText.style.display = "block";
 };
 
-export default function RacingCarGame() {
-  this.cars = [];
-  this.turnOfGame = 0;
-}
-
 const getCarNames = (e) => {
   const game = e.currentTarget.currentGame;
   const button = e.currentTarget;
@@ -55,6 +67,7 @@ const getRacingCount = (e) => {
   if (isRacingCountValid(racingCountInput.value)) {
     game.turnOfGame = Number(racingCountInput.value);
     button.disabled = true;
+    RacingCarGame.startGame(game);
   }
 };
 
