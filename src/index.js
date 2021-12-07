@@ -1,5 +1,5 @@
 import Car from "./car.js";
-import { printResultOneTurn } from "./utills.js";
+import { getWinner, printResultOneTurn, printWinner } from "./utills.js";
 import { isCarNameValid, isRacingCountValid } from "./validation.js";
 
 export default function RacingCarGame() {
@@ -18,6 +18,7 @@ RacingCarGame.startGame = (gameSetting) => {
     gameSetting.turnOfGame -= 1;
     printResultOneTurn(gameSetting.cars);
   }
+  printWinner(getWinner(gameSetting.cars));
 };
 
 const preventSubmitByEnterKey = () => {
