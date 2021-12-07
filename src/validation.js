@@ -6,7 +6,12 @@ const divideCarNames = (carNamesInput) => {
 };
 
 const isCarNameInputSpaces = (carNamesInput) => {
-  return carNamesInput.match(NAMES.SPACES);
+  if (carNamesInput.match(NAMES.SPACES)) {
+    alert(VALID_ALERTS.NAME_INCLUDE_SPACES);
+    return true;
+  }
+
+  return false;
 };
 
 const isCarNameInputLength = (carNamesArr) => {
@@ -15,42 +20,45 @@ const isCarNameInputLength = (carNamesArr) => {
       carNamesArr[i].length > NUMS.MAX_LENGTH ||
       carNamesArr[i].length < NUMS.MIN_LENGTH
     ) {
+      alert(VALID_ALERTS.NAME_LENGTH_ERROR);
       return true;
     }
   }
+
   return false;
 };
 
 const isCarNameDuplicated = (carNamesArr) => {
   for (let i = 0; i < carNamesArr.length; i += 1) {
     if (carNamesArr.slice(i + 1).includes(carNamesArr[i])) {
+      alert(VALID_ALERTS.NAME_DUPLICATED);
       return true;
     }
   }
+
   return false;
 };
 
 const isCarNameEnough = (carNamesArr) => {
-  return carNamesArr.length <= NUMS.MIN_LENGTH;
+  if (carNamesArr.length <= NUMS.MIN_LENGTH) {
+    alert(VALID_ALERTS.NAME_NOT_ENOUGH);
+    return true;
+  }
+
+  return false;
 };
 
-export default function isUserInputValid(carNamesInput) {
+export function isCarNameValid(carNamesInput) {
   const carNamesArr = divideCarNames(carNamesInput);
-  if (isCarNameInputSpaces(carNamesInput)) {
-    alert(VALID_ALERTS.INCLUDE_SPACES);
+
+  if (
+    isCarNameInputSpaces(carNamesInput) ||
+    isCarNameInputLength(carNamesArr) ||
+    isCarNameDuplicated(carNamesArr) ||
+    isCarNameEnough(carNamesArr)
+  ) {
     return false;
   }
-  if (isCarNameInputLength(carNamesArr)) {
-    alert(VALID_ALERTS.LENGTH_ERROR);
-    return false;
-  }
-  if (isCarNameDuplicated(carNamesArr)) {
-    alert(VALID_ALERTS.NAME_DUPLICATED);
-    return false;
-  }
-  if (isCarNameEnough(carNamesArr)) {
-    alert(VALID_ALERTS.NAME_NOT_ENOUGH);
-    return false;
-  }
+
   return carNamesArr;
 }
