@@ -1,4 +1,5 @@
-import { isCarNameValid } from "./validation.js";
+import Car from "./car.js";
+import { isCarNameValid, isRacingCountValid } from "./validation.js";
 
 const preventSubmitByEnterKey = () => {
   document.addEventListener("keydown", (e) => {
@@ -28,6 +29,7 @@ const showRacingCountForm = () => {
 
 export default function RacingCarGame() {
   this.cars = [];
+  this.turnOfGame = 0;
 }
 
 const getCarNames = (e) => {
@@ -44,15 +46,30 @@ const getCarNames = (e) => {
   }
 };
 
+const getRacingCount = (e) => {
+  const game = e.currentTarget.currentGame;
+  const button = e.currentTarget;
+  const racingCountInput = document.getElementById("racing-count-input");
+  e.preventDefault();
+
+  if (isRacingCountValid(racingCountInput.value)) {
+    game.turnOfGame = Number(racingCountInput.value);
+    button.disabled = true;
+  }
+};
+
 const init = (gameSetting) => {
   const carNamesButton = document.getElementById("car-names-submit");
+  const racingCountButton = document.getElementById("racing-count-submit");
 
   preventSubmitByEnterKey();
   hideRacingCountForm();
 
   carNamesButton.addEventListener("click", getCarNames);
+  racingCountButton.addEventListener("click", getRacingCount);
 
   carNamesButton.currentGame = gameSetting;
+  racingCountButton.currentGame = gameSetting;
 };
 
 const game = new RacingCarGame();

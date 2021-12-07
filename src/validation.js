@@ -62,3 +62,12 @@ export function isCarNameValid(carNamesInput) {
 
   return carNamesArr;
 }
+
+export function isRacingCountValid(count) {
+  if (count < NUMS.COUNT_MIN) {
+    alert(VALID_ALERTS.COUNT_NOT_VALID);
+    return false;
+  }
+
+  return true;
+}
