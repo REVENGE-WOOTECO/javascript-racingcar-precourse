@@ -16,7 +16,7 @@ const VALID_ALERTS = {
     "자동차 이름은 1자 이상, 5자 이하여야 합니다.\n예) 12345 (허용), 123456 (불가)",
   NAME_DUPLICATED: "중복되지 않은 이름을 사용해주세요.",
   NAME_NOT_ENOUGH: "자동차 이름을 2개 이상 입력해주세요.",
-  COUNT_NOT_VALID: "1이상의 수를 입력해주세요",
+  COUNT_NOT_VALID: "1 이상의 수를 입력해주세요",
 };
 
 const RESULT_TEXT = "최종 우승자: ";
