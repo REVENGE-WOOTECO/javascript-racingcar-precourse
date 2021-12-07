@@ -1,4 +1,5 @@
 import Car from "./car.js";
+import { printResultOneTurn } from "./utills.js";
 import { isCarNameValid, isRacingCountValid } from "./validation.js";
 
 export default function RacingCarGame() {
@@ -15,6 +16,7 @@ RacingCarGame.startGame = (gameSetting) => {
   while (gameSetting.turnOfGame > 0) {
     gameSetting.race();
     gameSetting.turnOfGame -= 1;
+    printResultOneTurn(gameSetting.cars);
   }
 };
 
@@ -44,6 +46,11 @@ const showRacingCountForm = () => {
   racingCountText.style.display = "block";
 };
 
+const showResultHeading = () => {
+  const resultHeading = document.getElementById("result");
+  resultHeading.style.display = "block";
+};
+
 const getCarNames = (e) => {
   const game = e.currentTarget.currentGame;
   const button = e.currentTarget;
@@ -67,6 +74,7 @@ const getRacingCount = (e) => {
   if (isRacingCountValid(racingCountInput.value)) {
     game.turnOfGame = Number(racingCountInput.value);
     button.disabled = true;
+    showResultHeading();
     RacingCarGame.startGame(game);
   }
 };
