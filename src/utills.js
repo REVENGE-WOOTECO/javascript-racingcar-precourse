@@ -18,14 +18,14 @@ export const printResultOneTurn = (cars) => {
 };
 
 export const getWinner = (cars) => {
-  const winnerList = [];
+  let winnerList = [];
   let largestForwardCount = 0;
 
   for (let i = 0; i < cars.length; i += 1) {
     if (cars[i].forwardCount > largestForwardCount) {
       largestForwardCount = cars[i].forwardCount;
-    }
-    if (cars[i].forwardCount === largestForwardCount) {
+      winnerList = [cars[i].carName];
+    } else if (cars[i].forwardCount === largestForwardCount) {
       winnerList.push(cars[i].carName);
     }
   }
