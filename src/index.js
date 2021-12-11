@@ -1,19 +1,29 @@
 class Car {
+  constructor(name, location) {
+    this.name = name;
+    this.location = location;
+  }
+
+  advanceCar() {
+    this.location += "-";
+  }
+}
+
+class RacingGame {
   constructor() {
-    this.names = [];
-    this.locations = [];
+    this.cars = [];
     this.racingCount = 0;
 
     this.init();
   }
 
   init() {
-    this.carNamesSubmitBtn = document.getElementById('car-names-submit');
-    this.racingCountSubmitBtn = document.getElementById('racing-count-submit');
-    this.carNamesInputEl = document.getElementById('car-names-input');
-    this.racingCountInputEl = document.getElementById('racing-count-input');
-    
-    this.createElement('app', 'div', null, 'race-result');
+    this.carNamesSubmitBtn = document.getElementById("car-names-submit");
+    this.racingCountSubmitBtn = document.getElementById("racing-count-submit");
+    this.carNamesInputEl = document.getElementById("car-names-input");
+    this.racingCountInputEl = document.getElementById("racing-count-input");
+
+    this.createElement("app", "div", null, "race-result");
     this.handleCarNamesSubmit();
     this.handleRacingCountSubmit();
   }
@@ -21,43 +31,44 @@ class Car {
   createElement(parentID, tag, text, tagID = null) {
     const el = document.createElement(tag);
     if (tagID) {
-      el.setAttribute('id', tagID);
+      el.setAttribute("id", tagID);
     }
     el.innerText = text;
     document.getElementById(parentID).appendChild(el);
     return el;
   }
 
-  createCar(carNames) {
-    const carNumbers = carNames.length;
+  addCar(name) {
+    // const carNumbers = carNames.length;
 
-    this.names = carNames;
-    this.locations = Array(carNumbers).fill('');
+    // this.names = carNames;
+    // this.locations = Array(carNumbers).fill("");
+    const car = new Car(name, location);
+    this.cars.push(car);
   }
 
   getCarIdx(carName) {
     return this.names.indexOf(carName);
   }
 
-  advanceCar(carName) {
-    const carIdx = this.getCarIdx(carName);
-    this.locations[carIdx] += '-';
-  }
-
   handleCarNamesSubmit() {
-    this.carNamesSubmitBtn.addEventListener('click', () => {
-      const carNames = this.carNamesInputEl.value.split(',');
-      if (this.isValidCarNames(carNames)) {
-        this.createCar(carNames);
-      } else {
-        this.showErrorMessage();
-      }
+    this.carNamesSubmitBtn.addEventListener("click", () => {
+      const carNames = this.carNamesInputEl.value.split(",");
+      carNames.forEach((name) => {
+        // TODO: 얼리 리턴
+        if (this.isValidCarNames(carNames)) {
+          this.addCar(name);
+        } else {
+          this.showErrorMessage();
+        }
+      });
     });
   }
 
   handleRacingCountSubmit() {
-    this.racingCountSubmitBtn.addEventListener('click', () => {
+    this.racingCountSubmitBtn.addEventListener("click", () => {
       const racingCount = this.racingCountInputEl.value;
+      // TODO: 얼리 리턴
       if (this.isValidRacingCount(racingCount)) {
         this.setRacingCount(racingCount);
         this.playRace(racingCount);
@@ -85,7 +96,7 @@ class Car {
   }
 
   isValidCarNames(names) {
-    const hasBlank = names.some((name) => name === '');
+    const hasBlank = names.some((name) => name === "");
     const isValidLength = names.every((name) => name.length <= 5);
     return !hasBlank && isValidLength;
   }
@@ -96,9 +107,9 @@ class Car {
   }
 
   showErrorMessage() {
-    alert('잘못된 입력값입니다.');
+    alert("잘못된 입력값입니다.");
   }
-  
+
   playRace(n) {
     for (let i = 0; i < n; i++) {
       this.moveCar();
@@ -107,31 +118,31 @@ class Car {
   }
 
   showRaceResult() {
-    const raceResultEl = document.getElementById('race-result');
+    const raceResultEl = document.getElementById("race-result");
 
     this.names.forEach((name, i) => {
-      const el = document.createElement('div');
+      const el = document.createElement("div");
       el.innerText = `${name} : ${this.locations[i]}`;
       raceResultEl.appendChild(el);
-      document.getElementById('race-result').appendChild(el);  
+      document.getElementById("race-result").appendChild(el);
     });
 
-    const blankEl = document.createElement('span');
+    const blankEl = document.createElement("span");
     blankEl.innerHTML = `&nbsp`;
     raceResultEl.appendChild(blankEl);
   }
-  
+
   moveCar() {
-    this.locations = this.locations.map(loca => {
+    this.locations = this.locations.map((loca) => {
       if (this.canAdvance(this.getRandomNumber())) {
-        return loca + '-';
+        return loca + "-";
       }
       return loca;
     });
   }
 
   getWinners() {
-    const max = Math.max(...this.locations.map(x => x.length));
+    const max = Math.max(...this.locations.map((x) => x.length));
     const winners = this.names.filter((_, i) => {
       return this.locations[i].length === max;
     });
@@ -140,8 +151,8 @@ class Car {
 
   showWinners() {
     const winners = this.getWinners(); // [east, west]
-    let winnersStr = '';
-    
+    let winnersStr = "";
+
     winners.forEach((winner, i) => {
       if (i === 0) {
         winnersStr += `${winner}`;
@@ -149,11 +160,11 @@ class Car {
         winnersStr += `, ${winner}`;
       }
     });
-    
-    this.createElement('app', 'span', '최종 우승자: ');
-    const winnersEl = this.createElement('app', 'span', null, 'racing-winners');
+
+    this.createElement("app", "span", "최종 우승자: ");
+    const winnersEl = this.createElement("app", "span", null, "racing-winners");
     winnersEl.innerText = winnersStr;
   }
 }
 
-const car = new Car();
+const car = new RacingGame();
