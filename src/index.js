@@ -21,7 +21,6 @@ class Car {
 class RacingGame {
   constructor() {
     this.cars = [];
-    this.racingCount = 0;
 
     this.init();
   }
@@ -102,10 +101,11 @@ class RacingGame {
   }
 
   playRace(n) {
-    for (let i = 0; i < n; i++) {
+    const racingNumber = Array(+n).fill(0);
+    racingNumber.forEach(() => {
       this.moveCar();
       this.showRaceResult();
-    }
+    });
   }
 
   showRaceResult() {
