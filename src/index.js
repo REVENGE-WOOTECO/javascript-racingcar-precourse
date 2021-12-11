@@ -54,13 +54,12 @@ class RacingGame {
   handleCarNamesSubmit() {
     this.carNamesSubmitBtn.addEventListener("click", () => {
       const carNames = this.carNamesInputEl.value.split(",");
-      carNames.forEach((name) => {
-        // TODO: 얼리 리턴
-        if (this.isValidCarNames(carNames)) {
-          this.addCar(name);
-        } else {
+      carNames.map((name) => {
+        if (!this.isValidCarName(name)) {
           this.showErrorMessage();
+          return;
         }
+        this.addCar(name);
       });
     });
   }
@@ -68,14 +67,13 @@ class RacingGame {
   handleRacingCountSubmit() {
     this.racingCountSubmitBtn.addEventListener("click", () => {
       const racingCount = this.racingCountInputEl.value;
-      // TODO: 얼리 리턴
-      if (this.isValidRacingCount(racingCount)) {
-        this.setRacingCount(racingCount);
-        this.playRace(racingCount);
-        this.showWinners();
-      } else {
+      if (!this.isValidRacingCount(racingCount)) {
         this.showErrorMessage();
+        return;
       }
+      this.setRacingCount(racingCount);
+      this.playRace(racingCount);
+      this.showWinners();
     });
   }
 
@@ -95,9 +93,9 @@ class RacingGame {
     return MissionUtils.Random.pickNumberInRange(MIN, MAX, LEN); // 1 ~ 9
   }
 
-  isValidCarNames(names) {
-    const hasBlank = names.some((name) => name === "");
-    const isValidLength = names.every((name) => name.length <= 5);
+  isValidCarName(name) {
+    const hasBlank = name === "";
+    const isValidLength = name.length <= 5;
     return !hasBlank && isValidLength;
   }
 
