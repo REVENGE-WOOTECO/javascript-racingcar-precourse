@@ -1,3 +1,5 @@
+import { createElement } from "./utils.js";
+
 class Car {
   constructor(name, location) {
     this.name = name;
@@ -23,19 +25,9 @@ class RacingGame {
     this.carNamesInputEl = document.getElementById("car-names-input");
     this.racingCountInputEl = document.getElementById("racing-count-input");
 
-    this.createElement("app", "div", null, "race-result");
+    createElement("app", "div", null, "race-result");
     this.handleCarNamesSubmit();
     this.handleRacingCountSubmit();
-  }
-
-  createElement(parentID, tag, text, tagID = null) {
-    const el = document.createElement(tag);
-    if (tagID) {
-      el.setAttribute("id", tagID);
-    }
-    el.innerText = text;
-    document.getElementById(parentID).appendChild(el);
-    return el;
   }
 
   addCar(name) {
@@ -161,8 +153,8 @@ class RacingGame {
       }
     });
 
-    this.createElement("app", "span", "최종 우승자: ");
-    const winnersEl = this.createElement("app", "span", null, "racing-winners");
+    createElement("app", "span", "최종 우승자: ");
+    const winnersEl = createElement("app", "span", null, "racing-winners");
     winnersEl.innerText = winnersStr;
   }
 }
