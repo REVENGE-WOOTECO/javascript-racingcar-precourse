@@ -39,11 +39,8 @@ class RacingGame {
   }
 
   addCar(name) {
-    // const carNumbers = carNames.length;
-
-    // this.names = carNames;
-    // this.locations = Array(carNumbers).fill("");
-    const car = new Car(name, location);
+    const INIT_LOCATION = "";
+    const car = new Car(name, INIT_LOCATION);
     this.cars.push(car);
   }
 
@@ -54,13 +51,11 @@ class RacingGame {
   handleCarNamesSubmit() {
     this.carNamesSubmitBtn.addEventListener("click", () => {
       const carNames = this.carNamesInputEl.value.split(",");
-      carNames.map((name) => {
-        if (!this.isValidCarName(name)) {
-          this.showErrorMessage();
-          return;
-        }
-        this.addCar(name);
-      });
+      if (!this.isValidCarNames(carNames)) {
+        this.showErrorMessage();
+        return;
+      }
+      carNames.map((name) => this.addCar(name));
     });
   }
 
@@ -93,9 +88,9 @@ class RacingGame {
     return MissionUtils.Random.pickNumberInRange(MIN, MAX, LEN); // 1 ~ 9
   }
 
-  isValidCarName(name) {
-    const hasBlank = name === "";
-    const isValidLength = name.length <= 5;
+  isValidCarNames(names) {
+    const hasBlank = names.some((name) => name === "");
+    const isValidLength = names.every((name) => name.length <= 5);
     return !hasBlank && isValidLength;
   }
 
@@ -118,9 +113,9 @@ class RacingGame {
   showRaceResult() {
     const raceResultEl = document.getElementById("race-result");
 
-    this.names.forEach((name, i) => {
+    this.cars.forEach((car) => {
       const el = document.createElement("div");
-      el.innerText = `${name} : ${this.locations[i]}`;
+      el.innerText = `${car.name} : ${car.location}`;
       raceResultEl.appendChild(el);
       document.getElementById("race-result").appendChild(el);
     });
@@ -131,31 +126,38 @@ class RacingGame {
   }
 
   moveCar() {
-    this.locations = this.locations.map((loca) => {
+    // this.locations = this.locations.map((loca) => {
+    //   if (this.canAdvance(this.getRandomNumber())) {
+    //     return loca + "-";
+    //   }
+    //   return loca;
+    // });
+    this.cars.map((car) => {
       if (this.canAdvance(this.getRandomNumber())) {
-        return loca + "-";
+        car.advanceCar();
       }
-      return loca;
     });
   }
 
   getWinners() {
-    const max = Math.max(...this.locations.map((x) => x.length));
-    const winners = this.names.filter((_, i) => {
-      return this.locations[i].length === max;
+    // TODO: 우승자 받는 로직 변경
+    const max = Math.max(...this.cars.map((car) => car.location.length));
+    const winners = this.cars.filter((car) => {
+      return car.location.length === max;
     });
     return winners;
   }
 
   showWinners() {
-    const winners = this.getWinners(); // [east, west]
+    const winners = this.getWinners();
+    // ex) winners =  [{name: 'b', location: '---'}, {name: 'c', location: '---'}]
     let winnersStr = "";
 
     winners.forEach((winner, i) => {
       if (i === 0) {
-        winnersStr += `${winner}`;
+        winnersStr += `${winner.name}`;
       } else {
-        winnersStr += `, ${winner}`;
+        winnersStr += `, ${winner.name}`;
       }
     });
 
@@ -165,4 +167,4 @@ class RacingGame {
   }
 }
 
-const car = new RacingGame();
+const racingGame = new RacingGame();
