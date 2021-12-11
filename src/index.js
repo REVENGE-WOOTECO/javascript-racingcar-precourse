@@ -1,3 +1,10 @@
+import {
+  ADVANCE_STANDARD,
+  LENGTH,
+  MAX_NUMBER,
+  MIN_NUMBER,
+  MIN_RACING_COUNT,
+} from "./constants.js";
 import { createElement } from "./utils.js";
 
 class Car {
@@ -6,7 +13,7 @@ class Car {
     this.location = location;
   }
 
-  advanceCar() {
+  advance() {
     this.location += "-";
   }
 }
@@ -65,8 +72,7 @@ class RacingGame {
   }
 
   canAdvance(number) {
-    const NUM = 4;
-    return number >= NUM;
+    return number >= ADVANCE_STANDARD;
   }
 
   setRacingCount(racingCount) {
@@ -74,10 +80,11 @@ class RacingGame {
   }
 
   getRandomNumber() {
-    const MIN = 0;
-    const MAX = 9;
-    const LEN = 1;
-    return MissionUtils.Random.pickNumberInRange(MIN, MAX, LEN); // 1 ~ 9
+    return MissionUtils.Random.pickNumberInRange(
+      MIN_NUMBER,
+      MAX_NUMBER,
+      LENGTH
+    ); // pickNumberInRange(0, 9, 1) => 1 ~ 9
   }
 
   isValidCarNames(names) {
@@ -86,9 +93,8 @@ class RacingGame {
     return !hasBlank && isValidLength;
   }
 
-  isValidRacingCount(number) {
-    const NUM = 0;
-    return number >= NUM;
+  isValidRacingCount(racingCount) {
+    return racingCount >= MIN_RACING_COUNT;
   }
 
   showErrorMessage() {
@@ -118,21 +124,14 @@ class RacingGame {
   }
 
   moveCar() {
-    // this.locations = this.locations.map((loca) => {
-    //   if (this.canAdvance(this.getRandomNumber())) {
-    //     return loca + "-";
-    //   }
-    //   return loca;
-    // });
     this.cars.map((car) => {
       if (this.canAdvance(this.getRandomNumber())) {
-        car.advanceCar();
+        car.advance();
       }
     });
   }
 
   getWinners() {
-    // TODO: 우승자 받는 로직 변경
     const max = Math.max(...this.cars.map((car) => car.location.length));
     const winners = this.cars.filter((car) => {
       return car.location.length === max;
