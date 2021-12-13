@@ -5,6 +5,7 @@ class Car {
   constructor(name, location) {
     this.name = name;
     this.location = location;
+    this.racingCount = 0;
   }
 
   advance() {
@@ -66,7 +67,7 @@ class RacingGame {
         return;
       }
       this.setRacingCount(racingCount);
-      this.playRace(racingCount);
+      this.playRace();
       this.showWinners();
     });
   }
@@ -101,9 +102,8 @@ class RacingGame {
     alert("잘못된 입력값입니다.");
   }
 
-  playRace(n) {
-    const racingNumber = Array(+n).fill(0);
-    racingNumber.forEach(() => {
+  playRace() {
+    Array.from({ length: this.racingCount }).forEach(() => {
       this.moveCar();
       this.showRaceResult();
     });
