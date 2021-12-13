@@ -143,21 +143,12 @@ class RacingGame {
   }
 
   showWinners() {
-    const winners = this.getWinners();
-    // ex) winners =  [{name: 'b', location: '---'}, {name: 'c', location: '---'}]
-    let winnersStr = "";
-
-    winners.forEach((winner, i) => {
-      if (i === 0) {
-        winnersStr += `${winner.name}`;
-      } else {
-        winnersStr += `, ${winner.name}`;
-      }
-    });
-
+    // ex) this.getWinners() = [{name: 'b', location: '---'}, {name: 'c', location: '---'}]
+    const winners = this.getWinners().map((winner) => winner.name);
+    // ex) winners = ['b', 'c'];
+    const winnersStr = winners.join(", ");
     createElement("app", "span", "최종 우승자: ");
-    const winnersEl = createElement("app", "span", null, "racing-winners");
-    winnersEl.innerText = winnersStr;
+    createElement("app", "span", winnersStr, "racing-winners");
   }
 }
 
