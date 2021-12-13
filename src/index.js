@@ -54,7 +54,7 @@ class RacingGame {
         this.showErrorMessage();
         return;
       }
-      carNames.map((name) => this.addCar(name));
+      carNames.forEach((name) => this.addCar(name));
     });
   }
 
@@ -127,7 +127,7 @@ class RacingGame {
   }
 
   moveCar() {
-    this.cars.map((car) => {
+    this.cars.forEach((car) => {
       if (this.canAdvance(this.getRandomNumber())) {
         car.advance();
       }
