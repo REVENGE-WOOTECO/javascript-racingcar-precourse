@@ -1,10 +1,4 @@
-import {
-  ADVANCE_STANDARD,
-  LENGTH,
-  MAX_NUMBER,
-  MIN_NUMBER,
-  MIN_RACING_COUNT,
-} from "./constants.js";
+import { RACING_GAME } from "./constants.js";
 import { createElement } from "./utils.js";
 
 class Car {
@@ -14,7 +8,15 @@ class Car {
   }
 
   advance() {
-    this.location += "-";
+    this.location += 1;
+  }
+
+  getLocation(str = "-") {
+    let locationStr = "";
+    Array.from({ length: this.location }).forEach(() => {
+      locationStr += str;
+    });
+    return locationStr;
   }
 }
 
@@ -37,7 +39,7 @@ class RacingGame {
   }
 
   addCar(name) {
-    const INIT_LOCATION = "";
+    const INIT_LOCATION = 0;
     const car = new Car(name, INIT_LOCATION);
     this.cars.push(car);
   }
@@ -71,7 +73,7 @@ class RacingGame {
   }
 
   canAdvance(number) {
-    return number >= ADVANCE_STANDARD;
+    return number >= RACING_GAME.ADVANCE_STANDARD;
   }
 
   setRacingCount(racingCount) {
@@ -80,9 +82,9 @@ class RacingGame {
 
   getRandomNumber() {
     return MissionUtils.Random.pickNumberInRange(
-      MIN_NUMBER,
-      MAX_NUMBER,
-      LENGTH
+      RACING_GAME.RANDOM_MIN,
+      RACING_GAME.RANDOM_MAX,
+      RACING_GAME.RANDOM_LENGTH
     ); // pickNumberInRange(0, 9, 1) => 1 ~ 9
   }
 
@@ -93,7 +95,7 @@ class RacingGame {
   }
 
   isValidRacingCount(racingCount) {
-    return racingCount >= MIN_RACING_COUNT;
+    return racingCount >= RACING_GAME.MIN_RACING_COUNT;
   }
 
   showErrorMessage() {
@@ -113,7 +115,9 @@ class RacingGame {
 
     this.cars.forEach((car) => {
       const el = document.createElement("div");
-      el.innerText = `${car.name} : ${car.location}`;
+      el.innerText = `${car.name} : ${car.getLocation(
+        RACING_GAME.LOCATION_STR
+      )}`;
       raceResultEl.appendChild(el);
       document.getElementById("race-result").appendChild(el);
     });
@@ -132,9 +136,9 @@ class RacingGame {
   }
 
   getWinners() {
-    const max = Math.max(...this.cars.map((car) => car.location.length));
+    const max = Math.max(...this.cars.map((car) => car.location));
     const winners = this.cars.filter((car) => {
-      return car.location.length === max;
+      return car.location === max;
     });
     return winners;
   }
