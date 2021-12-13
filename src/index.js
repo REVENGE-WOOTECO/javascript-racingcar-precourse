@@ -40,8 +40,7 @@ class RacingGame {
 
   addCar(name) {
     const INIT_LOCATION = 0;
-    const car = new Car(name, INIT_LOCATION);
-    this.cars.push(car);
+    this.cars = [...this.cars, new Car(name, INIT_LOCATION)];
   }
 
   getCarIdx(carName) {
