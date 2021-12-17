@@ -1,5 +1,5 @@
 import Car from "./car.js";
-import { getWinner, printResultOneTurn, printWinner } from "./utills.js";
+import { getWinner, printResultOneTurn, printWinner } from "./utils.js";
 import { isCarNameValid, isRacingCountValid } from "./validation.js";
 
 export default function RacingCarGame() {

@@ -1,4 +1,4 @@
-import { generateRandomNumber } from "./utills.js";
+import { generateRandomNumber } from "./utils.js";
 
 export default function Car(name) {
   this.carName = name;
