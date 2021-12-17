@@ -1,16 +1,28 @@
-import Car from "./car.js";
-import { getWinner, printResultOneTurn, printWinner } from "./utils.js";
+import {
+  generateRandomNumber,
+  getWinner,
+  printResultOneTurn,
+  printWinner,
+} from "./utils.js";
 import {
   checkCarNameValidation,
   checkRacingCountValidation,
 } from "./validation.js";
+
+function Car(name) {
+  this.carName = name;
+  this.forwardCount = 0;
+}
 
 const racingCarGame = {
   cars: [],
   turnOfGame: 0,
   race() {
     for (let i = 0; i < this.cars.length; i += 1) {
-      this.cars[i] = Car.forwardCar(this.cars[i]);
+      const randomNumber = generateRandomNumber();
+      if (randomNumber > 3) {
+        this.cars[i].forwardCount += 1;
+      }
     }
   },
   startGame() {
