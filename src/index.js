@@ -52,7 +52,7 @@ const showResultHeading = () => {
   resultHeading.style.display = "block";
 };
 
-const getCarNames = (e) => {
+const createCarObjectIfNamesValid = (e) => {
   const game = e.currentTarget.currentGame;
   const button = e.currentTarget;
   const carNamesInput = document.getElementById("car-names-input");
@@ -66,7 +66,7 @@ const getCarNames = (e) => {
   }
 };
 
-const getRacingCount = (e) => {
+const startGameIfRacingCountValid = (e) => {
   const game = e.currentTarget.currentGame;
   const button = e.currentTarget;
   const racingCountInput = document.getElementById("racing-count-input");
@@ -87,8 +87,8 @@ const init = (gameSetting) => {
   preventSubmitByEnterKey();
   hideRacingCountForm();
 
-  carNamesButton.addEventListener("click", getCarNames);
-  racingCountButton.addEventListener("click", getRacingCount);
+  carNamesButton.addEventListener("click", createCarObjectIfNamesValid);
+  racingCountButton.addEventListener("click", startGameIfRacingCountValid);
 
   carNamesButton.currentGame = gameSetting;
   racingCountButton.currentGame = gameSetting;
