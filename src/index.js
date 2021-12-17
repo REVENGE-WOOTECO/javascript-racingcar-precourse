@@ -44,45 +44,55 @@ const hideRacingCountForm = () => {
 const showRacingCountForm = () => {
   const racingCountForm = document.getElementById("racing-count-form");
   const racingCountText = document.getElementById("racing-count-text");
+  const carNamesSubmit = document.getElementById("car-names-submit");
 
   racingCountForm.style.display = "block";
   racingCountText.style.display = "block";
+  carNamesSubmit.disabled = true;
 };
 
 const showResultHeading = () => {
   const resultHeading = document.getElementById("result");
+  const racingCountSubmit = document.getElementById("racing-count-submit");
+
   resultHeading.style.display = "block";
+  racingCountSubmit.disabled = true;
+};
+
+const getValidCarNames = () => {
+  const carNamesInput = document.getElementById("car-names-input");
+
+  return checkCarNameValidation(carNamesInput.value);
 };
 
 const createCarObjectIfNamesValid = (e) => {
-  const game = e.currentTarget.currentGame;
-  const button = e.currentTarget;
-  const carNamesInput = document.getElementById("car-names-input");
-  const validCarNames = checkCarNameValidation(carNamesInput.value);
+  const validCarNames = getValidCarNames();
   e.preventDefault();
 
   if (validCarNames) {
-    game.cars = validCarNames.map((carName) => new Car(carName));
-    button.disabled = true;
+    racingCarGame.cars = validCarNames.map((carName) => new Car(carName));
     showRacingCountForm();
   }
 };
 
-const startGameIfRacingCountValid = (e) => {
-  const game = e.currentTarget.currentGame;
-  const button = e.currentTarget;
+const getValidRacingCount = () => {
   const racingCountInput = document.getElementById("racing-count-input");
+
+  return checkRacingCountValidation(racingCountInput.value);
+};
+
+const startGameIfRacingCountValid = (e) => {
+  const validRacingCount = getValidRacingCount();
   e.preventDefault();
 
-  if (checkRacingCountValidation(racingCountInput.value) !== null) {
-    game.turnOfGame = Number(racingCountInput.value);
-    button.disabled = true;
+  if (validRacingCount !== null) {
+    racingCarGame.turnOfGame = Number(validRacingCount);
     showResultHeading();
-    racingCarGame.startGame(game);
+    racingCarGame.startGame();
   }
 };
 
-const init = (gameSetting) => {
+const init = () => {
   const carNamesButton = document.getElementById("car-names-submit");
   const racingCountButton = document.getElementById("racing-count-submit");
 
@@ -91,10 +101,6 @@ const init = (gameSetting) => {
 
   carNamesButton.addEventListener("click", createCarObjectIfNamesValid);
   racingCountButton.addEventListener("click", startGameIfRacingCountValid);
-
-  carNamesButton.currentGame = gameSetting;
-  racingCountButton.currentGame = gameSetting;
 };
 
-const game = racingCarGame;
-init(game);
+init();
