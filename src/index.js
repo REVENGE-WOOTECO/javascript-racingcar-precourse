@@ -1,6 +1,9 @@
 import Car from "./car.js";
 import { getWinner, printResultOneTurn, printWinner } from "./utils.js";
-import { isCarNameValid, isRacingCountValid } from "./validation.js";
+import {
+  checkCarNameValidation,
+  checkRacingCountValidation,
+} from "./validation.js";
 
 const racingCarGame = {
   cars: [],
@@ -55,7 +58,7 @@ const createCarObjectIfNamesValid = (e) => {
   const game = e.currentTarget.currentGame;
   const button = e.currentTarget;
   const carNamesInput = document.getElementById("car-names-input");
-  const validCarNames = isCarNameValid(carNamesInput.value);
+  const validCarNames = checkCarNameValidation(carNamesInput.value);
   e.preventDefault();
 
   if (validCarNames) {
@@ -71,7 +74,7 @@ const startGameIfRacingCountValid = (e) => {
   const racingCountInput = document.getElementById("racing-count-input");
   e.preventDefault();
 
-  if (isRacingCountValid(racingCountInput.value)) {
+  if (checkRacingCountValidation(racingCountInput.value) !== null) {
     game.turnOfGame = Number(racingCountInput.value);
     button.disabled = true;
     showResultHeading();

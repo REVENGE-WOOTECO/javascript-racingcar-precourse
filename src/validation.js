@@ -7,7 +7,6 @@ const divideCarNames = (carNamesInput) => {
 
 const isCarNameInputSpaces = (carNamesInput) => {
   if (carNamesInput.match(NAMES.SPACES)) {
-    alert(VALID_ALERTS.NAME_INCLUDE_SPACES);
     return true;
   }
 
@@ -20,7 +19,6 @@ const isCarNameInputLength = (carNamesArr) => {
       carNamesArr[i].length > NUMS.MAX_LENGTH ||
       carNamesArr[i].length < NUMS.MIN_LENGTH
     ) {
-      alert(VALID_ALERTS.NAME_LENGTH_ERROR);
       return true;
     }
   }
@@ -31,7 +29,6 @@ const isCarNameInputLength = (carNamesArr) => {
 const isCarNameDuplicated = (carNamesArr) => {
   for (let i = 0; i < carNamesArr.length; i += 1) {
     if (carNamesArr.slice(i + 1).includes(carNamesArr[i])) {
-      alert(VALID_ALERTS.NAME_DUPLICATED);
       return true;
     }
   }
@@ -41,33 +38,53 @@ const isCarNameDuplicated = (carNamesArr) => {
 
 const isCarNameEnough = (carNamesArr) => {
   if (carNamesArr.length <= NUMS.MIN_LENGTH) {
-    alert(VALID_ALERTS.NAME_NOT_ENOUGH);
     return true;
   }
 
   return false;
 };
 
-export function isCarNameValid(carNamesInput) {
+const getCarNameValidationMessage = (carNamesInput) => {
   const carNamesArr = divideCarNames(carNamesInput);
 
-  if (
-    isCarNameInputSpaces(carNamesInput) ||
-    isCarNameInputLength(carNamesArr) ||
-    isCarNameDuplicated(carNamesArr) ||
-    isCarNameEnough(carNamesArr)
-  ) {
-    return false;
+  if (isCarNameInputSpaces(carNamesInput)) {
+    return VALID_ALERTS.NAME_INCLUDE_SPACES;
+  }
+  if (isCarNameInputLength(carNamesArr)) {
+    return VALID_ALERTS.NAME_LENGTH_ERROR;
+  }
+  if (isCarNameDuplicated(carNamesArr)) {
+    return VALID_ALERTS.NAME_DUPLICATED;
+  }
+  if (isCarNameEnough(carNamesArr)) {
+    return VALID_ALERTS.NAME_NOT_ENOUGH;
   }
 
-  return carNamesArr;
-}
+  return null;
+};
 
-export function isRacingCountValid(count) {
+export const checkCarNameValidation = (carNamesInput) => {
+  if (getCarNameValidationMessage(carNamesInput) !== null) {
+    alert(getCarNameValidationMessage(carNamesInput));
+    return null;
+  }
+
+  return divideCarNames(carNamesInput);
+};
+
+const isRacingCountValid = (count) => {
   if (count < NUMS.COUNT_MIN) {
-    alert(VALID_ALERTS.COUNT_NOT_VALID);
-    return false;
+    return true;
   }
 
-  return true;
-}
+  return false;
+};
+
+export const checkRacingCountValidation = (count) => {
+  if (isRacingCountValid(count)) {
+    alert(VALID_ALERTS.COUNT_NOT_VALID);
+    return null;
+  }
+
+  return count;
+};
