@@ -20,17 +20,12 @@ export const printResultOneTurn = (cars) => {
 };
 
 export const getWinner = (cars) => {
-  let winnerList = [];
-  let largestForwardCount = 0;
-
-  for (let i = 0; i < cars.length; i += 1) {
-    if (cars[i].forwardCount > largestForwardCount) {
-      largestForwardCount = cars[i].forwardCount;
-      winnerList = [cars[i].carName];
-    } else if (cars[i].forwardCount === largestForwardCount) {
-      winnerList.push(cars[i].carName);
-    }
-  }
+  const largestForwardCount = Math.max(
+    ...cars.map(({ forwardCount }) => forwardCount)
+  );
+  const winnerList = cars.filter(
+    ({ forwardCount }) => forwardCount === largestForwardCount
+  );
 
   return winnerList;
 };
@@ -42,7 +37,7 @@ export const printWinner = (winnerList) => {
 
   winnerSpan.id = "racing-winners";
   resultSpan.innerText = RESULT_TEXT;
-  winnerSpan.innerText = winnerList.join(", ");
+  winnerSpan.innerText = winnerList.map((winner) => winner.carName).join(", ");
 
-  app.appendChild(resultSpan, winnerSpan);
+  app.append(resultSpan, winnerSpan);
 };
