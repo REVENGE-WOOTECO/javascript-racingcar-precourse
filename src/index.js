@@ -2,23 +2,22 @@ import Car from "./car.js";
 import { getWinner, printResultOneTurn, printWinner } from "./utils.js";
 import { isCarNameValid, isRacingCountValid } from "./validation.js";
 
-export default function RacingCarGame() {
-  this.cars = [];
-  this.turnOfGame = 0;
-  this.race = () => {
+const racingCarGame = {
+  cars: [],
+  turnOfGame: 0,
+  race() {
     for (let i = 0; i < this.cars.length; i += 1) {
       this.cars[i] = Car.forwardCar(this.cars[i]);
     }
-  };
-}
-
-RacingCarGame.startGame = (gameSetting) => {
-  while (gameSetting.turnOfGame > 0) {
-    gameSetting.race();
-    gameSetting.turnOfGame -= 1;
-    printResultOneTurn(gameSetting.cars);
-  }
-  printWinner(getWinner(gameSetting.cars));
+  },
+  startGame() {
+    while (this.turnOfGame > 0) {
+      this.race();
+      this.turnOfGame -= 1;
+      printResultOneTurn(this.cars);
+    }
+    printWinner(getWinner(this.cars));
+  },
 };
 
 const preventSubmitByEnterKey = () => {
@@ -76,7 +75,7 @@ const startGameIfRacingCountValid = (e) => {
     game.turnOfGame = Number(racingCountInput.value);
     button.disabled = true;
     showResultHeading();
-    RacingCarGame.startGame(game);
+    racingCarGame.startGame(game);
   }
 };
 
@@ -94,5 +93,5 @@ const init = (gameSetting) => {
   racingCountButton.currentGame = gameSetting;
 };
 
-const game = new RacingCarGame();
+const game = racingCarGame;
 init(game);
