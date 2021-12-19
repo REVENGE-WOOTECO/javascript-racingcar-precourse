@@ -69,7 +69,7 @@ const getValidCarNames = () => {
   return checkCarNameValidation(carNamesInput.value);
 };
 
-const createCarObjectIfNamesValid = (e) => {
+const validCarNameObjects = (e) => {
   const validCarNames = getValidCarNames();
   e.preventDefault();
 
@@ -85,7 +85,7 @@ const getValidRacingCount = () => {
   return checkRacingCountValidation(racingCountInput.value);
 };
 
-const startGameIfRacingCountValid = (e) => {
+const validRacingCountStartGame = (e) => {
   const validRacingCount = getValidRacingCount();
   e.preventDefault();
 
@@ -102,8 +102,8 @@ const init = () => {
 
   hideRacingCountForm();
 
-  carNamesButton.addEventListener("click", createCarObjectIfNamesValid);
-  racingCountButton.addEventListener("click", startGameIfRacingCountValid);
+  carNamesButton.addEventListener("click", validCarNameObjects);
+  racingCountButton.addEventListener("click", validRacingCountStartGame);
 };
 
 init();
