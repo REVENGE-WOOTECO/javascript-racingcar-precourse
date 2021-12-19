@@ -35,14 +35,6 @@ const racingCarGame = {
   },
 };
 
-const preventSubmitByEnterKey = () => {
-  document.addEventListener("keydown", (e) => {
-    if (e.keyCode === 13) {
-      e.preventDefault();
-    }
-  });
-};
-
 const hideRacingCountForm = () => {
   const racingCountForm = document.getElementById("racing-count-form");
   const racingCountText = document.getElementById("racing-count-text");
@@ -108,7 +100,6 @@ const init = () => {
   const carNamesButton = document.getElementById("car-names-submit");
   const racingCountButton = document.getElementById("racing-count-submit");
 
-  preventSubmitByEnterKey();
   hideRacingCountForm();
 
   carNamesButton.addEventListener("click", createCarObjectIfNamesValid);
